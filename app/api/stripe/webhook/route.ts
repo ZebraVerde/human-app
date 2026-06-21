@@ -66,8 +66,3 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ received: true })
 }
-
-// Required: disable body parsing so Stripe can verify the raw body
-export const config = {
-  api: { bodyParser: false },
-}
