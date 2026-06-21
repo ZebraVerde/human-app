@@ -23,7 +23,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'You already have a ticket for this event.' }, { status: 400 })
     }
 
-    const { quantity = 1 } = await req.json()
+    const body = await req.json()
+    const quantity = body.quantity ?? 1
 
     if (quantity < 1 || quantity > 4) {
       return NextResponse.json({ error: 'Invalid quantity' }, { status: 400 })
@@ -53,6 +54,7 @@ export async function POST(req: Request) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
+      ui_mode: 'embedded',
       currency: 'eur',
       line_items: [
         {
@@ -73,8 +75,7 @@ export async function POST(req: Request) {
         user_id: user.id,
         quantity: String(quantity),
       },
-      success_url: `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${appUrl}/ticket-selection`,
+      return_url: `${appUrl}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
     })
 
     // Store session ID on ticket
@@ -83,7 +84,7 @@ export async function POST(req: Request) {
       .update({ stripe_checkout_session_id: session.id })
       .eq('id', ticket.id)
 
-    return NextResponse.json({ url: session.url })
+    return NextResponse.json({ clientSecret: session.client_secret })
   } catch (err: any) {
     console.error('Stripe checkout error:', err)
     return NextResponse.json({ error: err.message || 'Something went wrong' }, { status: 500 })

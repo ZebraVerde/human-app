@@ -14,20 +14,9 @@ export default function TicketSelectionPage() {
 
   const total = qty * PRICE
 
-  async function handleContinue() {
+  function handleContinue() {
     setLoading(true)
-    const res = await fetch('/api/stripe/create-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ quantity: qty }),
-    })
-    const { url, error } = await res.json()
-    if (error) {
-      alert(error)
-      setLoading(false)
-      return
-    }
-    window.location.href = url
+    router.push(`/checkout?qty=${qty}`)
   }
 
   return (
@@ -99,7 +88,7 @@ export default function TicketSelectionPage() {
       {/* CTA */}
       <div className="px-6">
         <button className="btn-orange" onClick={handleContinue} disabled={loading}>
-          {loading ? 'Redirecting…' : 'Continue to checkout'}
+          {loading ? 'Loading…' : 'Continue to checkout'}
         </button>
       </div>
     </div>
