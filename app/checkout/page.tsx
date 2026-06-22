@@ -6,7 +6,6 @@ import { loadStripe } from '@stripe/stripe-js'
 import Link from 'next/link'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
-
 const PRICE = 99
 
 function CheckoutContent() {
@@ -19,126 +18,75 @@ function CheckoutContent() {
 
   useEffect(() => {
     let mounted = true
-
     async function init() {
       try {
         const res = await fetch('/api/stripe/create-checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ quantity: qty }),
         })
         const data = await res.json()
-
         if (!mounted) return
-
-        if (data.error || !data.clientSecret) {
-          setError(data.error || 'Failed to initialise checkout')
-          setLoading(false)
-          return
-        }
-
+        if (data.error || !data.clientSecret) { setError(data.error || 'Failed to initialise checkout'); setLoading(false); return }
         const stripe = await stripePromise
         if (!stripe || !mounted) return
-
-        const checkout = await (stripe as any).initEmbeddedCheckout({
-          clientSecret: data.clientSecret,
-        })
-
+        const checkout = await (stripe as any).initEmbeddedCheckout({ clientSecret: data.clientSecret })
         checkoutRef.current = checkout
-
-        if (containerRef.current && mounted) {
-          checkout.mount(containerRef.current)
-          setLoading(false)
-        }
+        if (containerRef.current && mounted) { checkout.mount(containerRef.current); setLoading(false) }
       } catch (err: any) {
-        if (mounted) {
-          setError(err.message || 'Something went wrong')
-          setLoading(false)
-        }
+        if (mounted) { setError(err.message || 'Something went wrong'); setLoading(false) }
       }
     }
-
     init()
-
-    return () => {
-      mounted = false
-      checkoutRef.current?.destroy()
-    }
+    return () => { mounted = false; checkoutRef.current?.destroy() }
   }, [qty])
 
   return (
-    <div className="phone-shell flex flex-col" style={{ background: 'var(--cream)', minHeight: '100dvh' }}>
-      {/* Header */}
-      <div
-        className="w-full flex flex-col items-center justify-end pb-3 pt-12"
-        style={{ background: 'var(--navy)', minHeight: 120 }}
-      >
-        <h1
-          className="text-4xl tracking-widest uppercase"
-          style={{ fontFamily: 'Pirata One, serif', color: 'var(--cream)', letterSpacing: '0.2em' }}
-        >
-          HUMAN
-        </h1>
-        <p className="text-xs tracking-widest mt-1" style={{ color: 'var(--coral)' }}>
-          🔒 SECURE CHECKOUT
-        </p>
+    <div className="phone-shell flex flex-col" style={{ background: '#FAE0CC', minHeight: '100dvh' }}>
+      {/* Creature banner */}
+      <div style={{ position: 'relative', height: 160, overflow: 'hidden', flexShrink: 0 }}>
+        <img src="/creature.jpg" alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, transparent 30%, #FAE0CC 100%)' }} />
+        <div style={{ position: 'absolute', bottom: 10, left: 0, right: 0, textAlign: 'center' }}>
+          <div style={{ fontSize: 9, color: 'var(--coral)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>🔒 Secure checkout</div>
+        </div>
       </div>
 
       {/* Back */}
-      <div className="px-5 pt-4">
-        <Link href="/ticket-selection" className="text-xs" style={{ color: 'var(--coral)' }}>
-          ← Back
-        </Link>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#888', padding: '10px 16px', borderBottom: '1px solid rgba(13,27,62,0.1)', background: '#FAE0CC' }}>
+        <Link href="/ticket-selection" style={{ color: '#888', textDecoration: 'none', fontSize: 12 }}>← Back</Link>
       </div>
 
       {/* Ticket summary */}
-      <div className="px-5 pt-3 pb-4">
-        <h2
-          className="text-xl font-semibold mb-1"
-          style={{ fontFamily: 'Pirata One, serif', color: 'var(--navy)' }}
-        >
-          Your ticket
-        </h2>
-        <p className="text-xs mb-4" style={{ color: 'rgba(13,27,62,0.55)' }}>
-          Full-day access · 10:00–20:00
-        </p>
+      <div style={{ padding: '16px 18px 4px' }}>
+        <div style={{ fontFamily: "'Pirata One', serif", fontSize: 22, color: 'var(--navy)', marginBottom: 3 }}>Your ticket</div>
+        <div style={{ fontSize: 12, color: '#888', marginBottom: 14 }}>Full-day access · 10:00–20:00</div>
 
-        <div
-          className="rounded-xl p-4"
-          style={{ background: '#fff', border: '1px solid rgba(197,96,58,0.25)' }}
-        >
-          <p className="font-semibold text-sm mb-1" style={{ color: 'var(--navy)' }}>
-            General Admission
-          </p>
-          <p className="text-xs leading-relaxed" style={{ color: '#666' }}>
+        <div style={{ border: '1px solid var(--coral)', borderRadius: 12, padding: 16, background: '#fff' }}>
+          <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--navy)', marginBottom: 4 }}>General Admission</div>
+          <div style={{ fontSize: 12, color: '#888', marginBottom: 14, lineHeight: 1.55 }}>
             Access to all sessions and activities. Entry only — food, drinks, coffee, and parking not included.
-          </p>
-          <div className="flex items-end justify-between mt-3">
+          </div>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
             <div>
-              <span className="text-2xl font-bold" style={{ color: 'var(--navy)' }}>€{PRICE}</span>
-              <span className="text-xs ml-1" style={{ color: '#999' }}>VAT included</span>
+              <div style={{ fontFamily: "'Pirata One', serif", fontSize: 28, color: 'var(--navy)' }}>€{PRICE}</div>
+              <div style={{ fontSize: 10, color: '#aaa' }}>VAT included</div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm" style={{ color: '#666' }}>×</span>
-              <span className="text-lg font-semibold" style={{ color: 'var(--navy)' }}>{qty}</span>
-            </div>
+            <div style={{ fontSize: 14, color: '#666' }}>× {qty}</div>
           </div>
         </div>
       </div>
 
       {/* Stripe Embedded Checkout */}
-      <div className="flex-1 px-2 pb-8">
+      <div style={{ flex: 1, padding: '8px 4px 32px' }}>
         {loading && (
-          <div className="flex items-center justify-center py-12">
-            <p className="text-sm" style={{ color: 'rgba(13,27,62,0.45)' }}>Loading payment…</p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 0' }}>
+            <p style={{ fontSize: 13, color: 'rgba(13,27,62,0.45)' }}>Loading payment…</p>
           </div>
         )}
         {error && (
-          <div className="px-4 py-4 text-center">
-            <p className="text-sm text-red-500 mb-3">{error}</p>
-            <Link href="/ticket-selection" className="text-sm" style={{ color: 'var(--coral)' }}>
-              ← Go back
-            </Link>
+          <div style={{ padding: '16px', textAlign: 'center' }}>
+            <p style={{ fontSize: 13, color: '#ef4444', marginBottom: 12 }}>{error}</p>
+            <Link href="/ticket-selection" style={{ fontSize: 13, color: 'var(--coral)', textDecoration: 'none' }}>← Go back</Link>
           </div>
         )}
         <div ref={containerRef} />
@@ -148,9 +96,5 @@ function CheckoutContent() {
 }
 
 export default function CheckoutPage() {
-  return (
-    <Suspense>
-      <CheckoutContent />
-    </Suspense>
-  )
+  return <Suspense><CheckoutContent /></Suspense>
 }

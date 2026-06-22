@@ -12,83 +12,68 @@ export default function TicketSelectionPage() {
   const [qty, setQty] = useState(1)
   const [loading, setLoading] = useState(false)
 
-  const total = qty * PRICE
-
   function handleContinue() {
     setLoading(true)
     router.push(`/checkout?qty=${qty}`)
   }
 
   return (
-    <div className="phone-shell flex flex-col pb-10" style={{ background: 'var(--navy)' }}>
-      {/* Header */}
-      <div className="pt-14 px-6 pb-2">
-        <Link href="/home" className="text-xs" style={{ color: 'var(--coral)' }}>← Back</Link>
-      </div>
-      <div className="px-6 pb-6">
-        <p className="sec-label">Step 1 of 2</p>
-        <h1 className="text-2xl font-semibold" style={{ color: 'var(--cream)' }}>Your ticket</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--cream-dim)' }}>
-          Full-day access · 10:00–20:00
-        </p>
-      </div>
-
-      {/* Ticket card */}
-      <div
-        className="mx-6 rounded-2xl p-5 mb-6"
-        style={{ background: 'rgba(240,232,206,0.06)', border: '1px solid rgba(197,96,58,0.3)' }}
-      >
-        <div className="flex justify-between items-start mb-3">
-          <div>
-            <p className="font-medium" style={{ color: 'var(--cream)' }}>General Admission</p>
-            <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--cream-dim)' }}>
-              Access to all sessions and activities.{'\n'}Entry only — food, drinks & parking not included.
-            </p>
-          </div>
+    <div className="phone-shell flex flex-col" style={{ background: '#FAE0CC', minHeight: '100dvh' }}>
+      {/* Creature banner */}
+      <div style={{ position: 'relative', height: 160, overflow: 'hidden', flexShrink: 0 }}>
+        <img src="/creature.jpg" alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, transparent 30%, #FAE0CC 100%)' }} />
+        <div style={{ position: 'absolute', bottom: 10, left: 0, right: 0, textAlign: 'center' }}>
+          <div style={{ fontSize: 9, color: 'var(--coral)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>🔒 Secure checkout</div>
         </div>
+      </div>
 
-        <div className="flex items-center justify-between mt-4">
-          <div>
-            <span className="text-2xl font-semibold" style={{ color: 'var(--cream)' }}>€{PRICE}</span>
-            <span className="text-xs ml-2" style={{ color: 'var(--cream-dim)' }}>VAT included</span>
+      {/* Back */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#888', padding: '10px 16px', borderBottom: '1px solid rgba(13,27,62,0.1)', background: '#FAE0CC' }}>
+        <Link href="/home" style={{ color: '#888', textDecoration: 'none', fontSize: 12 }}>← Back</Link>
+      </div>
+
+      {/* Ticket summary */}
+      <div style={{ padding: '16px 18px 4px' }}>
+        <div style={{ fontFamily: "'Pirata One', serif", fontSize: 22, color: 'var(--navy)', marginBottom: 3 }}>Your ticket</div>
+        <div style={{ fontSize: 12, color: '#888', marginBottom: 14 }}>Full-day access · 10:00–20:00</div>
+
+        <div style={{ border: '1px solid var(--coral)', borderRadius: 12, padding: 16, background: '#fff' }}>
+          <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--navy)', marginBottom: 4 }}>General Admission</div>
+          <div style={{ fontSize: 12, color: '#888', marginBottom: 14, lineHeight: 1.55 }}>
+            Access to all sessions and activities. Entry only — food, drinks, coffee, and parking not included.
           </div>
-
-          {/* Qty picker */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setQty(q => Math.max(1, q - 1))}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold"
-              style={{ background: 'rgba(197,96,58,0.2)', color: 'var(--cream)' }}
-            >
-              −
-            </button>
-            <span className="text-lg font-semibold w-4 text-center" style={{ color: 'var(--cream)' }}>
-              {qty}
-            </span>
-            <button
-              onClick={() => setQty(q => Math.min(MAX_QTY, q + 1))}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold"
-              style={{ background: 'rgba(197,96,58,0.2)', color: 'var(--cream)' }}
-            >
-              +
-            </button>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+            <div>
+              <div style={{ fontFamily: "'Pirata One', serif", fontSize: 28, color: 'var(--navy)' }}>€{PRICE}</div>
+              <div style={{ fontSize: 10, color: '#aaa' }}>VAT included</div>
+            </div>
+            {/* Qty picker */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <button
+                onClick={() => setQty(q => Math.max(1, q - 1))}
+                style={{ width: 28, height: 28, borderRadius: '50%', border: '1px solid var(--coral)', background: 'transparent', color: 'var(--coral)', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >−</button>
+              <span style={{ fontSize: 15, fontWeight: 500, minWidth: 14, textAlign: 'center', color: 'var(--navy)' }}>{qty}</span>
+              <button
+                onClick={() => setQty(q => Math.min(MAX_QTY, q + 1))}
+                style={{ width: 28, height: 28, borderRadius: '50%', border: '1px solid var(--coral)', background: 'transparent', color: 'var(--coral)', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >+</button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Total */}
-      <div
-        className="mx-6 flex justify-between items-center py-4 mb-6"
-        style={{ borderTop: '1px solid rgba(197,96,58,0.2)', borderBottom: '1px solid rgba(197,96,58,0.2)' }}
-      >
-        <span className="text-sm" style={{ color: 'var(--cream-dim)' }}>Total</span>
-        <span className="text-xl font-semibold" style={{ color: 'var(--cream)' }}>€{total}</span>
+      <div style={{ margin: '12px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderTop: '1px solid rgba(13,27,62,0.12)', borderBottom: '1px solid rgba(13,27,62,0.12)' }}>
+        <span style={{ fontSize: 13, color: '#888' }}>Total</span>
+        <span style={{ fontFamily: "'Pirata One', serif", fontSize: 22, color: 'var(--navy)' }}>€{qty * PRICE}</span>
       </div>
 
       {/* CTA */}
-      <div className="px-6">
+      <div style={{ padding: '0 18px' }}>
         <button className="btn-orange" onClick={handleContinue} disabled={loading}>
-          {loading ? 'Loading…' : 'Continue to checkout'}
+          {loading ? 'Loading…' : `Continue to payment · €${qty * PRICE}`}
         </button>
       </div>
     </div>

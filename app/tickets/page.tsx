@@ -8,42 +8,31 @@ export default async function TicketsPage() {
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: tickets } = await supabase
-    .from('tickets')
-    .select('*')
-    .eq('user_id', user!.id)
-    .eq('status', 'confirmed')
-    .order('created_at', { ascending: false })
+    .from('tickets').select('*').eq('user_id', user!.id).eq('status', 'confirmed').order('created_at', { ascending: false })
 
   return (
-    <div className="phone-shell flex flex-col pb-20">
-      {/* Header */}
-      <div className="pt-14 pb-6 px-6">
-        <p className="sec-label">My Tickets</p>
-        <h1 className="text-2xl font-semibold" style={{ color: 'var(--cream)' }}>HUMAN</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--cream-dim)' }}>10 October 2026 · Parque das Nações</p>
+    <div className="phone-shell flex flex-col" style={{ position: 'relative', background: 'var(--navy)', overflow: 'hidden', minHeight: '100dvh' }}>
+      <img src="/ticket-bg.jpg" alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', zIndex: 0 }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(5,10,25,0.6)', zIndex: 1 }} />
+
+      <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100dvh' }}>
+        {tickets && tickets.length > 0 ? (
+          <div style={{ padding: '14px 16px 100px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+            {tickets.map(ticket => (
+              <QRTicket key={ticket.id} ticket={ticket} />
+            ))}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '80px 32px 32px' }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>🎟</div>
+            <p style={{ fontSize: 13, color: 'var(--cream-dim)', marginBottom: 24 }}>You don't have a ticket yet.</p>
+            <Link href="/ticket-selection" style={{ textDecoration: 'none', width: '100%', maxWidth: 240 }}>
+              <button className="btn-orange">Get your ticket · €99</button>
+            </Link>
+          </div>
+        )}
+        <BottomNav />
       </div>
-
-      {tickets && tickets.length > 0 ? (
-        <div className="px-6 flex flex-col gap-6">
-          {tickets.map(ticket => (
-            <QRTicket key={ticket.id} ticket={ticket} />
-          ))}
-        </div>
-      ) : (
-        <div className="px-6 flex flex-col items-center text-center pt-8">
-          <div className="text-5xl mb-4">🎟</div>
-          <p className="text-sm mb-6" style={{ color: 'var(--cream-dim)' }}>
-            You don't have a ticket yet.
-          </p>
-          <Link href="/ticket-selection">
-            <button className="btn-orange" style={{ maxWidth: 240 }}>
-              Get your ticket · €99
-            </button>
-          </Link>
-        </div>
-      )}
-
-      <BottomNav />
     </div>
   )
 }
