@@ -40,9 +40,6 @@ export default async function HomePage() {
           <Link href="/getting-there" style={{ flex: 1, padding: '10px 4px', border: '1px solid rgba(197,96,58,0.35)', borderRadius: 8, textAlign: 'center', fontSize: 10, color: 'var(--cream)', background: 'rgba(5,12,30,0.5)', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
             <span style={{ fontSize: 14 }}>📍</span>Getting there
           </Link>
-          <Link href="/crew" style={{ flex: 1, padding: '10px 4px', border: '1px solid rgba(197,96,58,0.35)', borderRadius: 8, textAlign: 'center', fontSize: 10, color: 'var(--cream)', background: 'rgba(5,12,30,0.5)', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-            <span style={{ fontSize: 14 }}>👥</span>Invite crew
-          </Link>
         </div>
 
         <BottomNav />

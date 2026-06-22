@@ -8,6 +8,7 @@ const tabs = [
   { href: '/tickets', label: 'Tickets', icon: TicketIcon },
   { href: '/faq',     label: 'FAQ',     icon: FaqIcon },
   { href: '/profile', label: 'Profile', icon: ProfileIcon },
+  { href: '/crew',    label: 'Crew',    icon: CrewIcon },
 ]
 
 export default function BottomNav() {
@@ -74,6 +75,17 @@ function ProfileIcon({ size }: { size: number }) {
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
+    </svg>
+  )
+}
+
+function CrewIcon({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
   )
 }
