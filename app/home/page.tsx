@@ -33,7 +33,7 @@ export default async function HomePage() {
         </div>
 
         {/* Quick links */}
-        <div style={{ padding: '0 20px 12px', display: 'flex', gap: 8 }}>
+        <div style={{ padding: '0 20px calc(80px + env(safe-area-inset-bottom))', display: 'flex', gap: 8 }}>
           <Link href="/faq" style={{ flex: 1, padding: '10px 4px', border: '1px solid rgba(197,96,58,0.35)', borderRadius: 8, textAlign: 'center', fontSize: 10, color: 'var(--cream)', background: 'rgba(5,12,30,0.5)', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
             <span style={{ fontSize: 14 }}>💬</span>FAQs
           </Link>

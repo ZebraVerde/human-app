@@ -20,7 +20,7 @@ export default function FaqPage() {
         </div>
 
         {/* Questions */}
-        <div style={{ padding: '0 22px', flex: 1, overflowY: 'auto' }}>
+        <div style={{ padding: '0 22px calc(80px + env(safe-area-inset-bottom)) 22px', flex: 1, overflowY: 'auto' }}>
           {FAQS.map(({ q, a }, i) => (
             <div key={i} style={{ borderBottom: '1px solid rgba(197,96,58,0.2)', padding: '13px 0' }}>
               <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--cream)', marginBottom: 5 }}>{q}</p>

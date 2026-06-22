@@ -54,7 +54,7 @@ export default function CrewPage() {
         <div style={{ flex: 1 }} />
 
         {/* Bottom share panel */}
-        <div style={{ padding: '16px 22px 20px', background: 'rgba(5,12,30,0.82)', backdropFilter: 'blur(8px)', borderTop: '1px solid rgba(197,96,58,0.3)' }}>
+        <div style={{ padding: '16px 22px calc(80px + env(safe-area-inset-bottom))', background: 'rgba(5,12,30,0.82)', backdropFilter: 'blur(8px)', borderTop: '1px solid rgba(197,96,58,0.3)' }}>
           <div style={{ fontSize: 10, color: 'var(--coral)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Bring your crew</div>
           <div style={{ fontSize: 13, color: 'var(--cream-dim)', lineHeight: 1.7, marginBottom: 14 }}>Share HUMAN with your people. Get your crew to the event.</div>
 
